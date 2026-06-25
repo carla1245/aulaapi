@@ -1,19 +1,52 @@
-from flask import Flask, render_template, request
-import requests
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Consulta de CEP-Python</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h3 class="text-center mb-4">Consulta de CEP com Python</h3>
 
-app = Flask(__name__)
+                      <form method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">Digite o CEP</label>
+                            <input type="text" name="cep"
+                                   class="form-control"
+                                   placeholder="Ex: 01001000"
+                                   maxlength="8"
+                                   required>
+                        </div>
 
-@app.route('/', methods=['GET', 'POST'])
-def index():
-    endereco = {}
-    if request.method == 'POST':
-        cep = request.form['cep']
-        endereco = requests.get(
-            f'https://viacep.com.br/ws/{cep}/json/'
-        ).json()
+                        <button type="submit" class="btn btn-primary w-100">
+                            Consultar
+                        </button>
 
-    return render_template('ceppython.html', endereco=endereco)
-app.run(debug=True)
+                    </form>                
+                    {% if endereco %}
+                    <hr>
 
-#instalar  flask e o request(pip install requests)
-#executar o flask python app.py
+                    <h5>Resultado:</h5>
+
+                    <p><strong>Rua:</strong> {{ endereco.logradouro }}</p>
+                    <p><strong>Bairro:</strong> {{ endereco.bairro }}</p>
+                    <p><strong>Cidade:</strong> {{ endereco.localidade }}</p>
+                    <p><strong>UF:</strong> {{ endereco.uf }}</p>
+
+                    {% endif %}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
